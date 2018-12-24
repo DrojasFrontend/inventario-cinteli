@@ -1,0 +1,17 @@
+header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 40px;
+}
+
+.padding_top {
+  padding-top: 80px;
+}
+
+.bd-example .table-responsive{
+  width: 2700px;
+}
