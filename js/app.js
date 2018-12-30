@@ -1,17 +1,22 @@
 firebase.initializeApp({
-  apiKey: "AIzaSyDaSY5a7YsalDgfQPu5OvpC6PH1XNW0oWQ",
-  authDomain: "inventario-ab11f.firebaseapp.com",
-  databaseURL: "https://inventario-ab11f.firebaseio.com",
-  projectId: "inventario-ab11f",
-  storageBucket: "inventario-ab11f.appspot.com",
-  messagingSenderId: "966851147904"
+  // apiKey: "AIzaSyDaSY5a7YsalDgfQPu5OvpC6PH1XNW0oWQ",
+  // authDomain: "inventario-ab11f.firebaseapp.com",
+  // databaseURL: "https://inventario-ab11f.firebaseio.com",
+  // projectId: "inventario-ab11f",
+  // storageBucket: "inventario-ab11f.appspot.com",
+  // messagingSenderId: "966851147904"
+  apiKey: "AIzaSyBOhCXks6RUxauH7c6YjflJkR4r9KFuTTw",
+    authDomain: "inventario-c6bec.firebaseapp.com",
+    databaseURL: "https://inventario-c6bec.firebaseio.com",
+    projectId: "inventario-c6bec",
+    storageBucket: "inventario-c6bec.appspot.com",
+    messagingSenderId: "224074546730"
 });
 
 // Initialize Cloud Firestore through Firebase
 var db = firebase.firestore();
 
 // GUARDAR DATOS ####################################################
-
 
 function guardar(){ 
   /* Datos */
@@ -91,7 +96,7 @@ db.collection("PC").onSnapshot((querySnapshot) => {
   querySnapshot.forEach((doc) => {
     console.log(`${doc.id} => ${doc.data()}`);
     tableResult.innerHTML += `
-    <tr>
+    <tr id="${doc.id}">
       <td>${doc.data().nit}</td>
       <td>${doc.data().type}</td>
       <td>${doc.data().nameTeam}</td>
@@ -133,11 +138,36 @@ db.collection("PC").onSnapshot((querySnapshot) => {
           '${doc.data().serialMouse}', 
           '${doc.data().serialKeyboard}', 
           '${doc.data().observations}')">
-          Editar
+          <i class="fas fa-edit"></i>
         </button>
       </td>
       <td>
-        <button type="button" class="btn btn-danger" onclick="btnRemove('${doc.id}')">Eliminar</button>
+        <button type="button" class="btn btn-danger" onclick="btnRemove('${doc.id}')"><i class="fas fa-trash-alt"></i></button>
+      </td>
+      <td>
+        <button type="button" class="btn btn-success" onclick="printRowTable(
+          '${doc.id}',
+          '${doc.data().nit}',
+          '${doc.data().type}',
+          '${doc.data().nameTeam}', 
+          '${doc.data().brand}', 
+          '${doc.data().model}', 
+          '${doc.data().teamSeries}', 
+          '${doc.data().code}', 
+          '${doc.data().monitor}', 
+          '${doc.data().processor}', 
+          '${doc.data().ram}', 
+          '${doc.data().hdd}', 
+          '${doc.data().os}', 
+          '${doc.data().serialBattery}', 
+          '${doc.data().chargerModel}', 
+          '${doc.data().serialCharger}', 
+          '${doc.data().accessories}',
+          '${doc.data().serialMouse}', 
+          '${doc.data().serialKeyboard}', 
+          '${doc.data().observations}')">
+          <i class="fas fa-print" data-toggle="modal"></i>
+        </button>
       </td>
     </tr>`
   });
@@ -158,7 +188,7 @@ function btnRemove(id) {
 
 // EDITAR DATOS ##########################################
 
-function btnEdit(id, type, nameTeam, brand, model, teamSeries, code, monitor, processor, ram, hdd, os, serialBattery, chargerModel, serialCharger, accessories, serialMouse, serialKeyboard, observations) {
+function btnEdit(id, nit, type, nameTeam, brand, model, teamSeries, code, monitor, processor, ram, hdd, os, serialBattery, chargerModel, serialCharger, accessories, serialMouse, serialKeyboard, observations) {
   
   document.getElementById('nit').value = nit;
   document.getElementById('type').value = type;
@@ -299,14 +329,134 @@ function SearchCode() {
   }
 }
 
+// IMPRIMIR DATOS ##########################################
 
+function printRowTable(id, nit, type, nameTeam, brand, model, teamSeries, code, monitor, processor, ram, hdd, os, serialBattery, chargerModel, serialCharger, accessories, serialMouse, serialKeyboard, observations) {
 
+  var mywindow = window.open('', 'PRINT');
 
+  var iamgeId = document.getElementById('fileViewerForm:imageViewer');
 
+  var imagObject = new Image();
+  imagObject = iamgeId;
+  var originalImage = '<img id="imageViewer" src="'+imagObject+'" />';
 
+    mywindow.document.write(`
+    <div>
+      <div>` + originalImage + `</div>
+      <div style="text-align: center; padding-bottom: 15px; font-weight: bold">ACTA DE ENTREGA<br>DE HERRAMIENTAS DE TRABAJO </div>
+      <div style="width: 100%;max-width:500px;margin:0 auto;padding-bottom:15px;text-align: center">Mediante este documento se hace constar que <strong>CINTELI COLOMBIA SAS</strong> ha realizado entrega A quien así mismo lo recibe, de las herramientas cuyas características se detallan a continuación: </div>
+      <table style="width: 100%; max-width: 600px; margin: 0 auto;">
+        <tr>
+          <td colspan="2" style="font-weight: bold;">Equipo de Cómputo</td>
+        </tr>
+        <tr>
+          <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Cedula</td>
+          <td style="border: 0; padding: 10px 0 0 0; vertical-align: top;">` + nit + `</td>
+        </tr>
+        <tr>
+          <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Codigo</td>
+          <td>`+ code + `</td>
+        </tr>
+        <tr>
+          <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Tipo</td>
+          <td>` + type + `</td>
+        </tr>
+        <tr>
+          <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Nombre del equipo</td>
+          <td>`+ nameTeam + `</td>
+        </tr>
+        <tr>
+          <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Marca</td>
+          <td>`+ brand + `</td>
+        </tr>
+        <tr>
+          <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Modelo</td>
+          <td>`+ model + `</td>
+        </tr>
+        <tr>
+          <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Serial Equipo</td>
+          <td>`+ teamSeries + `</td>
+        </tr>
+        <tr>
+          <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Monitor</td>
+          <td>`+ monitor + `</td>
+        </tr>
+        <tr>
+          <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Procesador</td>
+          <td>`+ processor + `</td>
+        </tr>
+        <tr>
+          <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Memoria Ram</td>
+          <td>`+ ram + `</td>
+        </tr>
+        <tr>
+          <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Disco Duro</td>
+          <td>`+ hdd + `</td>
+        </tr>
+        <tr>
+          <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Sistema Operativo</td>
+          <td>`+ os + `</td>
+        </tr>
+        <tr>
+          <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Serial Bateria</td>
+          <td>`+ serialBattery + `</td>
+        </tr>
+        <tr>
+          <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Modelo Cargador</td>
+          <td>`+ chargerModel + `</td>
+        </tr>
+        <tr>
+          <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Serial Cargador</td>
+          <td>`+ serialCharger + `</td>
+        </tr>
+        <tr>
+          <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Accesorios</td>
+          <td>`+ accessories + `</td>
+        </tr>
+        <tr>
+          <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Serial Mouse</td>
+          <td>`+ serialMouse + `</td>
+        </tr>
+        <tr>
+          <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Serial Teclado</td>
+          <td>`+ serialKeyboard + `</td>
+        </tr>
+        <tr>
+          <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Observaciones</td>
+          <td>`+ observations + `</td>
+        </tr>
+        <tr>
+          <td style="text-transform: uppercase;font-weight: bold">Entrega:</td>
+          <td style="text-transform: uppercase;font-weight: bold">Recibido por:</td>
+        </tr>
+        <tr>
+          <td style="text-transform: uppercase;font-weight: bold">Nombre: Osnaider Luquez</td>
+          <td style="text-transform: uppercase;font-weight: bold">Nombre:</td>
+        </tr>
+        <tr>
+          <td style="text-transform: uppercase;font-weight: bold">Firma:</td>
+          <td style="text-transform: uppercase;font-weight: bold">Firma:</td>
+        </tr>
+        <tr>
+          <td style="text-transform: uppercase;font-weight: bold">C. C. No.:____________________</td>
+          <td style="text-transform: uppercase;font-weight: bold">C. C. No.:____________________</td>
+        </tr>
+      </table>
+    </div> `);
 
+    // mywindow.document.write('</head><body >');
+    // mywindow.document.write('<h1>' + nit  + '</h1>');
 
+    mywindow.document.close(); // necessary for IE >= 10
+    mywindow.focus(); // necessary for IE >= 10*/
 
+    mywindow.print();
+    mywindow.close();
 
-
-
+    return true;
+  
+  
+  
+ 
+}

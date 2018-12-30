@@ -13,5 +13,18 @@ header {
 }
 
 .bd-example .table-responsive{
-  width: 2700px;
+  width: 2300px;
 }
+
+/* TABLE HIDDEN PRINT */
+
+#tableResult {
+  font-size: 12px;
+}
+
+table thead tr {
+  background-color: #000;
+  color: #fff;
+  font-size: 12px;
+}
+
