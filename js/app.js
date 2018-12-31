@@ -1,16 +1,16 @@
 firebase.initializeApp({
-  // apiKey: "AIzaSyDaSY5a7YsalDgfQPu5OvpC6PH1XNW0oWQ",
-  // authDomain: "inventario-ab11f.firebaseapp.com",
-  // databaseURL: "https://inventario-ab11f.firebaseio.com",
-  // projectId: "inventario-ab11f",
-  // storageBucket: "inventario-ab11f.appspot.com",
-  // messagingSenderId: "966851147904"
-  apiKey: "AIzaSyBOhCXks6RUxauH7c6YjflJkR4r9KFuTTw",
-    authDomain: "inventario-c6bec.firebaseapp.com",
-    databaseURL: "https://inventario-c6bec.firebaseio.com",
-    projectId: "inventario-c6bec",
-    storageBucket: "inventario-c6bec.appspot.com",
-    messagingSenderId: "224074546730"
+  apiKey: "AIzaSyDaSY5a7YsalDgfQPu5OvpC6PH1XNW0oWQ",
+  authDomain: "inventario-ab11f.firebaseapp.com",
+  databaseURL: "https://inventario-ab11f.firebaseio.com",
+  projectId: "inventario-ab11f",
+  storageBucket: "inventario-ab11f.appspot.com",
+  messagingSenderId: "966851147904"
+  // apiKey: "AIzaSyBOhCXks6RUxauH7c6YjflJkR4r9KFuTTw",
+  //   authDomain: "inventario-c6bec.firebaseapp.com",
+  //   databaseURL: "https://inventario-c6bec.firebaseio.com",
+  //   projectId: "inventario-c6bec",
+  //   storageBucket: "inventario-c6bec.appspot.com",
+  //   messagingSenderId: "224074546730"
 });
 
 // Initialize Cloud Firestore through Firebase
@@ -21,12 +21,12 @@ var db = firebase.firestore();
 function guardar(){ 
   /* Datos */
   var nit = document.getElementById('nit').value;
+  var code = document.getElementById('code').value;
   var type = document.getElementById('type').value;
   var nameTeam = document.getElementById('nameTeam').value;
   var brand = document.getElementById('brand').value;
   var model = document.getElementById('model').value;
   var teamSeries = document.getElementById('teamSeries').value;
-  var code = document.getElementById('code').value;
   var monitor = document.getElementById('monitor').value;
   var processor = document.getElementById('processor').value;
   var ram = document.getElementById('ram').value;
@@ -98,12 +98,12 @@ db.collection("PC").onSnapshot((querySnapshot) => {
     tableResult.innerHTML += `
     <tr id="${doc.id}">
       <td>${doc.data().nit}</td>
+      <td>${doc.data().code}</td>
       <td>${doc.data().type}</td>
       <td>${doc.data().nameTeam}</td>
       <td>${doc.data().brand}</td>
       <td>${doc.data().model}</td>
       <td>${doc.data().teamSeries}</td>
-      <td>${doc.data().code}</td>
       <td>${doc.data().monitor}</td>
       <td>${doc.data().processor}</td>
       <td>${doc.data().ram}</td>
@@ -120,12 +120,12 @@ db.collection("PC").onSnapshot((querySnapshot) => {
         <button type="button" class="btn btn-info" onclick="btnEdit(
           '${doc.id}',
           '${doc.data().nit}',
+          '${doc.data().code}', 
           '${doc.data().type}',
           '${doc.data().nameTeam}', 
           '${doc.data().brand}', 
           '${doc.data().model}', 
-          '${doc.data().teamSeries}', 
-          '${doc.data().code}', 
+          '${doc.data().teamSeries}',
           '${doc.data().monitor}', 
           '${doc.data().processor}', 
           '${doc.data().ram}', 
@@ -145,15 +145,15 @@ db.collection("PC").onSnapshot((querySnapshot) => {
         <button type="button" class="btn btn-danger" onclick="btnRemove('${doc.id}')"><i class="fas fa-trash-alt"></i></button>
       </td>
       <td>
-        <button type="button" class="btn btn-success" onclick="printRowTable(
+        <button type="button" class="btn btn-success" onclick="readRowTable(
           '${doc.id}',
           '${doc.data().nit}',
+          '${doc.data().code}', 
           '${doc.data().type}',
           '${doc.data().nameTeam}', 
           '${doc.data().brand}', 
           '${doc.data().model}', 
           '${doc.data().teamSeries}', 
-          '${doc.data().code}', 
           '${doc.data().monitor}', 
           '${doc.data().processor}', 
           '${doc.data().ram}', 
@@ -191,12 +191,12 @@ function btnRemove(id) {
 function btnEdit(id, nit, type, nameTeam, brand, model, teamSeries, code, monitor, processor, ram, hdd, os, serialBattery, chargerModel, serialCharger, accessories, serialMouse, serialKeyboard, observations) {
   
   document.getElementById('nit').value = nit;
+  document.getElementById('code').value = code;
   document.getElementById('type').value = type;
   document.getElementById('nameTeam').value = nameTeam;
   document.getElementById('brand').value = brand;
   document.getElementById('model').value = model;
   document.getElementById('teamSeries').value = teamSeries;
-  document.getElementById('code').value = code;
   document.getElementById('monitor').value = monitor;
   document.getElementById('processor').value = processor;
   document.getElementById('ram').value = ram;
@@ -216,13 +216,13 @@ function btnEdit(id, nit, type, nameTeam, brand, model, teamSeries, code, monito
   boton.onclick = function() {
     var washingtonRef = db.collection("PC").doc(id);
 
-    var nit = document.getElementById('nit').value
-    var type = document.getElementById('type').value
+    var nit = document.getElementById('nit').value;
+    var code = document.getElementById('code').value;
+    var type = document.getElementById('type').value;
     var nameTeam = document.getElementById('nameTeam').value;
     var brand = document.getElementById('brand').value;
     var model = document.getElementById('model').value;
     var teamSeries = document.getElementById('teamSeries').value;
-    var code = document.getElementById('code').value;
     var monitor = document.getElementById('monitor').value;
     var processor = document.getElementById('processor').value;
     var ram = document.getElementById('ram').value;
@@ -238,11 +238,11 @@ function btnEdit(id, nit, type, nameTeam, brand, model, teamSeries, code, monito
 
     // Set the "capital" field of the city 'DC'
       return washingtonRef.update({
-        type: type,
         nit: nit,
+        model: model,
+        type: type,
         nameTeam: nameTeam,
         brand: brand,
-        model: model,
         teamSeries: teamSeries,
         code: code,
         monitor: monitor,
@@ -260,12 +260,12 @@ function btnEdit(id, nit, type, nameTeam, brand, model, teamSeries, code, monito
       })
       .then(function() {
         document.getElementById('nit').value = '';
+        document.getElementById('code').value = '';
         document.getElementById('type').value = '';
         document.getElementById('nameTeam').value = '';
         document.getElementById('brand').value = '';
         document.getElementById('model').value = '';
         document.getElementById('teamSeries').value = '';
-        document.getElementById('code').value = '';
         document.getElementById('monitor').value = '';
         document.getElementById('processor').value = '';
         document.getElementById('ram').value = '';
@@ -331,19 +331,38 @@ function SearchCode() {
 
 // IMPRIMIR DATOS ##########################################
 
-function printRowTable(id, nit, type, nameTeam, brand, model, teamSeries, code, monitor, processor, ram, hdd, os, serialBattery, chargerModel, serialCharger, accessories, serialMouse, serialKeyboard, observations) {
+function readRowTable(id, nit, type, nameTeam, brand, model, teamSeries, code, monitor, processor, ram, hdd, os, serialBattery, chargerModel, serialCharger, accessories, serialMouse, serialKeyboard, observations) {
+  this.id = id;
+  this.nit = nit; 
+  this.model = model; 
+  this.type = type; 
+  this.nameTeam = nameTeam; 
+  this.brand = brand;
+  this.teamSeries = teamSeries; 
+  this.code = code;
+  this.monitor = monitor; 
+  this.processor = processor; 
+  this.ram = ram;
+  this.hdd = hdd;
+  this.os = os; 
+  this.serialBattery = serialBattery; 
+  this.chargerModel = chargerModel; 
+  this.serialCharger = serialCharger; 
+  this.accessories = accessories;
+  this.serialMouse = serialMouse; 
+  this.serialKeyboard = serialKeyboard; 
+  this.observations = observations;
+  $('#exampleModal').modal()
+}
 
+function printRowTableDeliver(id, nit, type, nameTeam, brand, model, teamSeries, code, monitor, processor, ram, hdd, os, serialBattery, chargerModel, serialCharger, accessories, serialMouse, serialKeyboard, observations) {
   var mywindow = window.open('', 'PRINT');
-
-  var iamgeId = document.getElementById('fileViewerForm:imageViewer');
-
-  var imagObject = new Image();
-  imagObject = iamgeId;
-  var originalImage = '<img id="imageViewer" src="'+imagObject+'" />';
 
     mywindow.document.write(`
     <div>
-      <div>` + originalImage + `</div>
+      <div>
+        <img width="220" height="70" src="https://cinteligroup.com/wp-content/uploads/2018/09/cropped-logo-Cinteli-e1536768205323.png" class="custom-logo" alt="Cinteli" itemprop="logo">
+      </div>
       <div style="text-align: center; padding-bottom: 15px; font-weight: bold">ACTA DE ENTREGA<br>DE HERRAMIENTAS DE TRABAJO </div>
       <div style="width: 100%;max-width:500px;margin:0 auto;padding-bottom:15px;text-align: center">Mediante este documento se hace constar que <strong>CINTELI COLOMBIA SAS</strong> ha realizado entrega A quien así mismo lo recibe, de las herramientas cuyas características se detallan a continuación: </div>
       <table style="width: 100%; max-width: 600px; margin: 0 auto;">
@@ -352,79 +371,79 @@ function printRowTable(id, nit, type, nameTeam, brand, model, teamSeries, code, 
         </tr>
         <tr>
           <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Cedula</td>
-          <td style="border: 0; padding: 10px 0 0 0; vertical-align: top;">` + nit + `</td>
+          <td style="border: 0; padding: 10px 0 0 0; vertical-align: top;">` + this.nit + `</td>
         </tr>
         <tr>
           <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Codigo</td>
-          <td>`+ code + `</td>
+          <td>`+ this.code + `</td>
         </tr>
         <tr>
           <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Tipo</td>
-          <td>` + type + `</td>
+          <td>` + this.type + `</td>
         </tr>
         <tr>
           <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Nombre del equipo</td>
-          <td>`+ nameTeam + `</td>
+          <td>`+ this.nameTeam + `</td>
         </tr>
         <tr>
           <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Marca</td>
-          <td>`+ brand + `</td>
+          <td>`+ this.brand + `</td>
         </tr>
         <tr>
           <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Modelo</td>
-          <td>`+ model + `</td>
+          <td>`+ this.model + `</td>
         </tr>
         <tr>
           <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Serial Equipo</td>
-          <td>`+ teamSeries + `</td>
+          <td>`+ this.teamSeries + `</td>
         </tr>
         <tr>
           <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Monitor</td>
-          <td>`+ monitor + `</td>
+          <td>`+ this.monitor + `</td>
         </tr>
         <tr>
           <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Procesador</td>
-          <td>`+ processor + `</td>
+          <td>`+ this.processor + `</td>
         </tr>
         <tr>
           <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Memoria Ram</td>
-          <td>`+ ram + `</td>
+          <td>`+ this.ram + `</td>
         </tr>
         <tr>
           <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Disco Duro</td>
-          <td>`+ hdd + `</td>
+          <td>`+ this.hdd + `</td>
         </tr>
         <tr>
           <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Sistema Operativo</td>
-          <td>`+ os + `</td>
+          <td>`+ this.os + `</td>
         </tr>
         <tr>
           <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Serial Bateria</td>
-          <td>`+ serialBattery + `</td>
+          <td>`+ this.serialBattery + `</td>
         </tr>
         <tr>
           <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Modelo Cargador</td>
-          <td>`+ chargerModel + `</td>
+          <td>`+ this.chargerModel + `</td>
         </tr>
         <tr>
           <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Serial Cargador</td>
-          <td>`+ serialCharger + `</td>
+          <td>`+ this.serialCharger + `</td>
         </tr>
         <tr>
           <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Accesorios</td>
-          <td>`+ accessories + `</td>
+          <td>`+ this.accessories + `</td>
         </tr>
         <tr>
           <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Serial Mouse</td>
-          <td>`+ serialMouse + `</td>
+          <td>`+ this.serialMouse + `</td>
         </tr>
         <tr>
           <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Serial Teclado</td>
-          <td>`+ serialKeyboard + `</td>
+          <td>`+ this.serialKeyboard + `</td>
         </tr>
         <tr>
-          <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Observaciones</td>
-          <td>`+ observations + `</td>
+          <td style="border:0;padding:10px 0 20px 0;vertical-align:top; font-weight: bold">Observaciones</td>
+          <td style="border:0;padding:10px 0 20px 0;">`+ this.observations + `</td>
         </tr>
         <tr>
           <td style="text-transform: uppercase;font-weight: bold">Entrega:</td>
@@ -455,8 +474,127 @@ function printRowTable(id, nit, type, nameTeam, brand, model, teamSeries, code, 
     mywindow.close();
 
     return true;
-  
-  
-  
- 
 }
+
+function printRowTableReturn(id, nit, type, nameTeam, brand, model, teamSeries, code, monitor, processor, ram, hdd, os, serialBattery, chargerModel, serialCharger, accessories, serialMouse, serialKeyboard, observations) {
+  var mywindow = window.open('', 'PRINT');
+
+    mywindow.document.write(`
+    <div>
+      <div>
+        <img width="220" height="70" src="https://cinteligroup.com/wp-content/uploads/2018/09/cropped-logo-Cinteli-e1536768205323.png" class="custom-logo" alt="Cinteli" itemprop="logo">
+      </div>
+      <div style="text-align: center; padding-bottom: 15px; font-weight: bold">ACTA DE DEVOLUCION<br>DE HERRAMIENTAS DE TRABAJO </div>
+      <div style="width: 100%;max-width:500px;margin:0 auto;padding-bottom:15px;text-align: center">Mediante este documento se hace constar que <strong>CINTELI COLOMBIA SAS</strong> ha realizado entrega A quien así mismo lo recibe, de las herramientas cuyas características se detallan a continuación: </div>
+      <table style="width: 100%; max-width: 600px; margin: 0 auto;">
+        <tr>
+          <td colspan="2" style="font-weight: bold;">Equipo de Cómputo</td>
+        </tr>
+        <tr>
+          <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Cedula</td>
+          <td style="border: 0; padding: 10px 0 0 0; vertical-align: top;">` + this.nit + `</td>
+        </tr>
+        <tr>
+          <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Codigo</td>
+          <td>`+ this.code + `</td>
+        </tr>
+        <tr>
+          <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Tipo</td>
+          <td>` + this.type + `</td>
+        </tr>
+        <tr>
+          <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Nombre del equipo</td>
+          <td>`+ this.nameTeam + `</td>
+        </tr>
+        <tr>
+          <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Marca</td>
+          <td>`+ this.brand + `</td>
+        </tr>
+        <tr>
+          <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Modelo</td>
+          <td>`+ this.model + `</td>
+        </tr>
+        <tr>
+          <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Serial Equipo</td>
+          <td>`+ this.teamSeries + `</td>
+        </tr>
+        <tr>
+          <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Monitor</td>
+          <td>`+ this.monitor + `</td>
+        </tr>
+        <tr>
+          <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Procesador</td>
+          <td>`+ this.processor + `</td>
+        </tr>
+        <tr>
+          <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Memoria Ram</td>
+          <td>`+ this.ram + `</td>
+        </tr>
+        <tr>
+          <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Disco Duro</td>
+          <td>`+ this.hdd + `</td>
+        </tr>
+        <tr>
+          <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Sistema Operativo</td>
+          <td>`+ this.os + `</td>
+        </tr>
+        <tr>
+          <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Serial Bateria</td>
+          <td>`+ this.serialBattery + `</td>
+        </tr>
+        <tr>
+          <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Modelo Cargador</td>
+          <td>`+ this.chargerModel + `</td>
+        </tr>
+        <tr>
+          <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Serial Cargador</td>
+          <td>`+ this.serialCharger + `</td>
+        </tr>
+        <tr>
+          <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Accesorios</td>
+          <td>`+ this.accessories + `</td>
+        </tr>
+        <tr>
+          <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Serial Mouse</td>
+          <td>`+ this.serialMouse + `</td>
+        </tr>
+        <tr>
+          <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Serial Teclado</td>
+          <td>`+ this.serialKeyboard + `</td>
+        </tr>
+        <tr>
+          <td style="border:0;padding:10px 0 20px 0;vertical-align:top; font-weight: bold">Observaciones</td>
+          <td style="border:0;padding:10px 0 20px 0;">`+ this.observations + `</td>
+        </tr>
+        <tr>
+          <td style="text-transform: uppercase;font-weight: bold">Entrega:</td>
+          <td style="text-transform: uppercase;font-weight: bold">Recibido por:</td>
+        </tr>
+        <tr>
+          <td style="text-transform: uppercase;font-weight: bold">Nombre: Osnaider Luquez</td>
+          <td style="text-transform: uppercase;font-weight: bold">Nombre:</td>
+        </tr>
+        <tr>
+          <td style="text-transform: uppercase;font-weight: bold">Firma:</td>
+          <td style="text-transform: uppercase;font-weight: bold">Firma:</td>
+        </tr>
+        <tr>
+          <td style="text-transform: uppercase;font-weight: bold">C. C. No.:____________________</td>
+          <td style="text-transform: uppercase;font-weight: bold">C. C. No.:____________________</td>
+        </tr>
+      </table>
+    </div> `);
+
+    // mywindow.document.write('</head><body >');
+    // mywindow.document.write('<h1>' + nit  + '</h1>');
+
+    mywindow.document.close(); // necessary for IE >= 10
+    mywindow.focus(); // necessary for IE >= 10*/
+
+    mywindow.print();
+    mywindow.close();
+
+    return true;
+}
+
+
