@@ -21,27 +21,29 @@ var db = firebase.firestore();
 function guardar(){ 
   /* Datos */
   var nit = document.getElementById('nit').value;
-  var code = document.getElementById('code').value;
+  var name = document.getElementById('name').value;
   var type = document.getElementById('type').value;
-  var nameTeam = document.getElementById('nameTeam').value;
+var nameTeam = document.getElementById('nameTeam').value;
+  var code = document.getElementById('code').value;
+  var teamSeries = document.getElementById('teamSeries').value;
+  
   var brand = document.getElementById('brand').value;
   var model = document.getElementById('model').value;
-  var teamSeries = document.getElementById('teamSeries').value;
-  var monitor = document.getElementById('monitor').value;
   var processor = document.getElementById('processor').value;
   var ram = document.getElementById('ram').value;
   var hdd = document.getElementById('hdd').value;
-  var os = document.getElementById('os').value;
+  var os = document.getElementById('os').value;  
+  var monitor = document.getElementById('monitor').value; 
   var serialBattery = document.getElementById('serialBattery').value;
   var chargerModel = document.getElementById('chargerModel').value;
-  var serialCharger = document.getElementById('serialCharger').value;
   var accessories = document.getElementById('accessories').value;
   var serialMouse = document.getElementById('serialMouse').value;
   var serialKeyboard = document.getElementById('serialKeyboard').value;
   var observations= document.getElementById('observations').value;
 
   db.collection("PC").add({
-    nit : nit,
+    nit: nit,
+    name: name,
     type : type,
     nameTeam: nameTeam,
     brand: brand,
@@ -55,7 +57,6 @@ function guardar(){
     os: os,
     serialBattery: serialBattery,
     chargerModel: chargerModel,
-    serialCharger: serialCharger,
     accessories: accessories,
     serialMouse: serialMouse,
     serialKeyboard: serialKeyboard,
@@ -64,6 +65,7 @@ function guardar(){
   .then(function(docRef) {
     //console.log("Document written with ID: ", docRef.id);
     document.getElementById('nit').value = '';
+    document.getElementById('name').value = '';
     document.getElementById('type').value = '';
     document.getElementById('nameTeam').value = '';
     document.getElementById('brand').value = '';
@@ -77,7 +79,6 @@ function guardar(){
     document.getElementById('os').value = '';
     document.getElementById('serialBattery').value = '';
     document.getElementById('chargerModel').value = '';
-    document.getElementById('serialCharger').value = '';
     document.getElementById('accessories').value = '';
     document.getElementById('serialMouse').value = '';
     document.getElementById('serialKeyboard').value = '';
@@ -98,20 +99,20 @@ db.collection("PC").onSnapshot((querySnapshot) => {
     tableResult.innerHTML += `
     <tr id="${doc.id}">
       <td>${doc.data().nit}</td>
-      <td>${doc.data().code}</td>
+      <td>${doc.data().name}</td>
       <td>${doc.data().type}</td>
       <td>${doc.data().nameTeam}</td>
+      <td>${doc.data().code}</td>
+      <td>${doc.data().teamSeries}</td>
       <td>${doc.data().brand}</td>
       <td>${doc.data().model}</td>
-      <td>${doc.data().teamSeries}</td>
-      <td>${doc.data().monitor}</td>
       <td>${doc.data().processor}</td>
       <td>${doc.data().ram}</td>
       <td>${doc.data().hdd}</td>
       <td>${doc.data().os}</td>
+      <td>${doc.data().monitor}</td>
       <td>${doc.data().serialBattery}</td>
       <td>${doc.data().chargerModel}</td>
-      <td>${doc.data().serialCharger}</td>
       <td>${doc.data().accessories}</td>
       <td>${doc.data().serialMouse}</td>
       <td>${doc.data().serialKeyboard}</td>
@@ -120,20 +121,20 @@ db.collection("PC").onSnapshot((querySnapshot) => {
         <button type="button" class="btn btn-info" onclick="btnEdit(
           '${doc.id}',
           '${doc.data().nit}',
-          '${doc.data().code}', 
+          '${doc.data().name}',
           '${doc.data().type}',
-          '${doc.data().nameTeam}', 
+          '${doc.data().nameTeam}',
+          '${doc.data().code}', 
+          '${doc.data().teamSeries}',          
           '${doc.data().brand}', 
           '${doc.data().model}', 
-          '${doc.data().teamSeries}',
-          '${doc.data().monitor}', 
-          '${doc.data().processor}', 
+          '${doc.data().processor}',
           '${doc.data().ram}', 
-          '${doc.data().hdd}', 
+          '${doc.data().hdd}',
           '${doc.data().os}', 
+          '${doc.data().monitor}', 
           '${doc.data().serialBattery}', 
           '${doc.data().chargerModel}', 
-          '${doc.data().serialCharger}', 
           '${doc.data().accessories}',
           '${doc.data().serialMouse}', 
           '${doc.data().serialKeyboard}', 
@@ -148,20 +149,20 @@ db.collection("PC").onSnapshot((querySnapshot) => {
         <button type="button" class="btn btn-success" onclick="readRowTable(
           '${doc.id}',
           '${doc.data().nit}',
-          '${doc.data().code}', 
+          '${doc.data().name}',
           '${doc.data().type}',
-          '${doc.data().nameTeam}', 
+          '${doc.data().nameTeam}',
+          '${doc.data().code}', 
+          '${doc.data().teamSeries}',          
           '${doc.data().brand}', 
           '${doc.data().model}', 
-          '${doc.data().teamSeries}', 
-          '${doc.data().monitor}', 
-          '${doc.data().processor}', 
+          '${doc.data().processor}',
           '${doc.data().ram}', 
-          '${doc.data().hdd}', 
+          '${doc.data().hdd}',
           '${doc.data().os}', 
+          '${doc.data().monitor}', 
           '${doc.data().serialBattery}', 
           '${doc.data().chargerModel}', 
-          '${doc.data().serialCharger}', 
           '${doc.data().accessories}',
           '${doc.data().serialMouse}', 
           '${doc.data().serialKeyboard}', 
@@ -188,9 +189,10 @@ function btnRemove(id) {
 
 // EDITAR DATOS ##########################################
 
-function btnEdit(id, nit, type, nameTeam, brand, model, teamSeries, code, monitor, processor, ram, hdd, os, serialBattery, chargerModel, serialCharger, accessories, serialMouse, serialKeyboard, observations) {
+function btnEdit(id, nit, name, type, nameTeam, code, teamSeries, brand, model, processor, ram, hdd, os, monitor, serialBattery, chargerModel, accessories, serialMouse, serialKeyboard, observations) {
   
   document.getElementById('nit').value = nit;
+  document.getElementById('name').value = name;
   document.getElementById('code').value = code;
   document.getElementById('type').value = type;
   document.getElementById('nameTeam').value = nameTeam;
@@ -204,7 +206,6 @@ function btnEdit(id, nit, type, nameTeam, brand, model, teamSeries, code, monito
   document.getElementById('os').value = os;
   document.getElementById('serialBattery').value = serialBattery;
   document.getElementById('chargerModel').value = chargerModel;
-  document.getElementById('serialCharger').value = serialCharger;
   document.getElementById('accessories').value = accessories;
   document.getElementById('serialMouse').value = serialMouse;
   document.getElementById('serialKeyboard').value = serialKeyboard;
@@ -217,6 +218,7 @@ function btnEdit(id, nit, type, nameTeam, brand, model, teamSeries, code, monito
     var washingtonRef = db.collection("PC").doc(id);
 
     var nit = document.getElementById('nit').value;
+    var name = document.getElementById('name').value;
     var code = document.getElementById('code').value;
     var type = document.getElementById('type').value;
     var nameTeam = document.getElementById('nameTeam').value;
@@ -230,7 +232,6 @@ function btnEdit(id, nit, type, nameTeam, brand, model, teamSeries, code, monito
     var os = document.getElementById('os').value;
     var serialBattery = document.getElementById('serialBattery').value;
     var chargerModel = document.getElementById('chargerModel').value;
-    var serialCharger = document.getElementById('serialCharger').value;
     var accessories = document.getElementById('accessories').value;
     var serialMouse = document.getElementById('serialMouse').value;
     var serialKeyboard = document.getElementById('serialKeyboard').value;
@@ -239,6 +240,7 @@ function btnEdit(id, nit, type, nameTeam, brand, model, teamSeries, code, monito
     // Set the "capital" field of the city 'DC'
       return washingtonRef.update({
         nit: nit,
+        name: name,
         model: model,
         type: type,
         nameTeam: nameTeam,
@@ -252,7 +254,6 @@ function btnEdit(id, nit, type, nameTeam, brand, model, teamSeries, code, monito
         os: os,
         serialBattery: serialBattery,
         chargerModel: chargerModel,
-        serialCharger: serialCharger,
         accessories: accessories,
         serialMouse: serialMouse,
         serialKeyboard: serialKeyboard,
@@ -260,6 +261,7 @@ function btnEdit(id, nit, type, nameTeam, brand, model, teamSeries, code, monito
       })
       .then(function() {
         document.getElementById('nit').value = '';
+        document.getElementById('name').value = '';
         document.getElementById('code').value = '';
         document.getElementById('type').value = '';
         document.getElementById('nameTeam').value = '';
@@ -273,7 +275,6 @@ function btnEdit(id, nit, type, nameTeam, brand, model, teamSeries, code, monito
         document.getElementById('os').value = '';
         document.getElementById('serialBattery').value = '';
         document.getElementById('chargerModel').value = '';
-        document.getElementById('serialCharger').value = '';
         document.getElementById('accessories').value = '';
         document.getElementById('serialMouse').value = '';
         document.getElementById('serialKeyboard').value = '';
@@ -331,8 +332,9 @@ function SearchCode() {
 
 // IMPRIMIR DATOS ##########################################
 
-function readRowTable(id, nit, type, nameTeam, brand, model, teamSeries, code, monitor, processor, ram, hdd, os, serialBattery, chargerModel, serialCharger, accessories, serialMouse, serialKeyboard, observations) {
+function readRowTable(id, nit, name, type, nameTeam, code, teamSeries, brand, model, processor, ram, hdd, os, monitor, serialBattery, chargerModel, accessories, serialMouse, serialKeyboard, observations) {
   this.id = id;
+  this.name = name;
   this.nit = nit; 
   this.model = model; 
   this.type = type; 
@@ -347,7 +349,6 @@ function readRowTable(id, nit, type, nameTeam, brand, model, teamSeries, code, m
   this.os = os; 
   this.serialBattery = serialBattery; 
   this.chargerModel = chargerModel; 
-  this.serialCharger = serialCharger; 
   this.accessories = accessories;
   this.serialMouse = serialMouse; 
   this.serialKeyboard = serialKeyboard; 
@@ -355,7 +356,7 @@ function readRowTable(id, nit, type, nameTeam, brand, model, teamSeries, code, m
   $('#exampleModal').modal()
 }
 
-function printRowTableDeliver(id, nit, type, nameTeam, brand, model, teamSeries, code, monitor, processor, ram, hdd, os, serialBattery, chargerModel, serialCharger, accessories, serialMouse, serialKeyboard, observations) {
+function printRowTableDeliver(id, nit, name, type, nameTeam, code, teamSeries, brand, model, processor, ram, hdd, os, monitor, serialBattery, chargerModel, accessories, serialMouse, serialKeyboard, observations) {
   var mywindow = window.open('', 'PRINT');
 
     mywindow.document.write(`
@@ -372,6 +373,10 @@ function printRowTableDeliver(id, nit, type, nameTeam, brand, model, teamSeries,
         <tr>
           <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Cedula</td>
           <td style="border: 0; padding: 10px 0 0 0; vertical-align: top;">` + this.nit + `</td>
+        </tr>
+        <tr>
+          <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Nombre</td>
+          <td style="border: 0; padding: 10px 0 0 0; vertical-align: top;">` + this.name + `</td>
         </tr>
         <tr>
           <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Codigo</td>
@@ -424,10 +429,6 @@ function printRowTableDeliver(id, nit, type, nameTeam, brand, model, teamSeries,
         <tr>
           <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Modelo Cargador</td>
           <td>`+ this.chargerModel + `</td>
-        </tr>
-        <tr>
-          <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Serial Cargador</td>
-          <td>`+ this.serialCharger + `</td>
         </tr>
         <tr>
           <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Accesorios</td>
@@ -476,7 +477,7 @@ function printRowTableDeliver(id, nit, type, nameTeam, brand, model, teamSeries,
     return true;
 }
 
-function printRowTableReturn(id, nit, type, nameTeam, brand, model, teamSeries, code, monitor, processor, ram, hdd, os, serialBattery, chargerModel, serialCharger, accessories, serialMouse, serialKeyboard, observations) {
+function printRowTableReturn(id, nit, name, type, nameTeam, code, teamSeries, brand, model, processor, ram, hdd, os, monitor, serialBattery, chargerModel, accessories, serialMouse, serialKeyboard, observations) {
   var mywindow = window.open('', 'PRINT');
 
     mywindow.document.write(`
@@ -493,6 +494,10 @@ function printRowTableReturn(id, nit, type, nameTeam, brand, model, teamSeries, 
         <tr>
           <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Cedula</td>
           <td style="border: 0; padding: 10px 0 0 0; vertical-align: top;">` + this.nit + `</td>
+        </tr>
+        <tr>
+          <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Nombre</td>
+          <td style="border: 0; padding: 10px 0 0 0; vertical-align: top;">` + this.name + `</td>
         </tr>
         <tr>
           <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Codigo</td>
@@ -545,10 +550,6 @@ function printRowTableReturn(id, nit, type, nameTeam, brand, model, teamSeries, 
         <tr>
           <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Modelo Cargador</td>
           <td>`+ this.chargerModel + `</td>
-        </tr>
-        <tr>
-          <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Serial Cargador</td>
-          <td>`+ this.serialCharger + `</td>
         </tr>
         <tr>
           <td style="border:0;padding:10px 0 0 0;vertical-align:top; font-weight: bold">Accesorios</td>
