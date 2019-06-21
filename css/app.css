@@ -8,12 +8,43 @@ header {
   padding: 10px 40px;
 }
 
+/* MENU FIXED CENTER */
+.button-center {
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.button-center a {
+  width: 70px;
+  margin: 0 2px;
+  padding: 5px;
+  text-align: center;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  background-color: rgb(0, 123, 255);
+  border-radius: 5px;
+}
+
+.button-center a:hover {
+  text-decoration: blink;
+  background-color: rgba(0, 123, 255, 0.6);
+}
+
+.button-center a.active {
+  background-color: rgba(0, 123, 255, 0.6);
+}
+
 .padding_top {
   padding-top: 80px;
 }
 
 .bd-example .table-responsive{
-  width: 2300px;
+  width: 2580px;
 }
 
 /* TABLE HIDDEN PRINT */
@@ -26,5 +57,12 @@ table thead tr {
   background-color: #000;
   color: #fff;
   font-size: 12px;
+}
+
+.table td, .table th {
+  text-align: center;
+  padding: 6px 10px;
+  vertical-align: middle;
+  border-top: 1px solid #dee2e6;
 }
 
